@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Rocket {
 
-    private String name;
+    private final String name;
     private RocketStatus status;
 
     public Rocket(String name) {
@@ -16,16 +16,8 @@ public class Rocket {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public RocketStatus getStatus() {
         return status;
-    }
-
-    public void setStatus(RocketStatus status) {
-        this.status = status;
     }
 
     @Override
