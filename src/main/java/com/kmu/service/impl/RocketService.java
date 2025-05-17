@@ -24,9 +24,9 @@ public class RocketService implements RocketServiceInterface {
     @Override
     public boolean addNewRocket(Rocket rocket) {
         if(rocket == null) return false;
-        if(validateRocketName(rocket.name())) return false;
-        if(rocketMap.containsKey(rocket.name())) return false;
-        rocketMap.put(rocket.name(), rocket);
+        if(validateRocketName(rocket.getName())) return false;
+        if(rocketMap.containsKey(rocket.getName())) return false;
+        rocketMap.put(rocket.getName(), rocket);
         return true;
     }
 
