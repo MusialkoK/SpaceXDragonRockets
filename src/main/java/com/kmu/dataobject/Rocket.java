@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Rocket {
 
     private final String name;
-    private RocketStatus status;
+    private final RocketStatus status;
 
     public Rocket(String name) {
         this.name = name;
