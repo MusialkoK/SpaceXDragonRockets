@@ -100,4 +100,17 @@ class RocketServiceTest {
         assertFalse(isAdded);
         verify(rocketMap, never()).put(any(), any());
     }
+
+    @Test
+    void isSingleton(){
+        //given + when
+        RocketService rocketService1 = RocketService.getInstance();
+        RocketService rocketService2 = RocketService.getInstance();
+
+        //then
+
+        assertNotNull(rocketService1);
+        assertEquals(rocketService1, rocketService2);
+
+    }
 }
