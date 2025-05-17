@@ -10,8 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,5 +37,20 @@ class RocketServiceTest {
         verify(rocketMap, times(1)).put(rocketName, rocket);
         assertTrue(rocketMap.containsKey(rocketName));
         assertEquals(1, rocketMap.size());
+    }
+
+    @Test
+    void doNotAddRocketWithNullName() {
+        //given
+        String rocketName = null;
+        Rocket rocket = new Rocket(rocketName);
+        when(rocketMap.size()).thenCallRealMethod();
+
+        //when
+        boolean isAdded = rocketService.addNewRocket(rocket);
+        //then
+        assertFalse(isAdded);
+        verify(rocketMap, never()).put(any(), any());
+        assertEquals(0, rocketMap.size());
     }
 }
