@@ -17,7 +17,8 @@ MissionStatusService
     setInProgressStatus
     setEndedStatus
 
-Services accessible via injection. (Spring-like approach)
+~~Services accessible via injection. (Spring-like approach)~~
+Injected using static method (lazy singleton)
 Interface for every service.
 
 
