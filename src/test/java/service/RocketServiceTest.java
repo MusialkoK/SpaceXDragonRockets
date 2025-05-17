@@ -53,4 +53,19 @@ class RocketServiceTest {
         verify(rocketMap, never()).put(any(), any());
         assertEquals(0, rocketMap.size());
     }
+
+    @Test
+    void doNotAddRocketWithEmptyName() {
+        //given
+        String rocketName = "";
+        Rocket rocket = new Rocket(rocketName);
+        when(rocketMap.size()).thenCallRealMethod();
+
+        //when
+        boolean isAdded = rocketService.addNewRocket(rocket);
+        //then
+        assertFalse(isAdded);
+        verify(rocketMap, never()).put(any(), any());
+        assertEquals(0, rocketMap.size());
+    }
 }
