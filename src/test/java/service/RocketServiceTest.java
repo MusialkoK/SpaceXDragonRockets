@@ -68,4 +68,36 @@ class RocketServiceTest {
         verify(rocketMap, never()).put(any(), any());
         assertEquals(0, rocketMap.size());
     }
+
+    @Test
+    void doNotAddRocketIfNameNotUnique() {
+        //given
+        String rocketName = "Dragon 1";
+        Rocket firstRocket = new Rocket(rocketName);
+        when(rocketMap.put(any(), any())).thenCallRealMethod();
+        when(rocketMap.containsKey(rocketName)).thenCallRealMethod();
+        when(rocketMap.size()).thenCallRealMethod();
+        rocketService.addNewRocket(firstRocket);
+        Rocket secondRocket = new Rocket(rocketName);
+
+        //when
+        boolean isAdded = rocketService.addNewRocket(secondRocket);
+        //then
+        assertFalse(isAdded);
+        verify(rocketMap, times(1)).put(any(), any());
+        assertTrue(rocketMap.containsKey(rocketName));
+        assertEquals(1, rocketMap.size());
+    }
+
+    @Test
+    void doNotAddIfRocketNull() {
+        //given
+        Rocket rocket = null;
+
+        //when
+        boolean isAdded = rocketService.addNewRocket(rocket);
+        //then
+        assertFalse(isAdded);
+        verify(rocketMap, never()).put(any(), any());
+    }
 }
