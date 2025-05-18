@@ -7,6 +7,8 @@ public class Rocket {
     private final String name;
     private RocketStatus status;
 
+    private Mission currentMission;
+
     public Rocket(String name) {
         this.name = name;
         this.status = RocketStatus.ON_GROUND;
@@ -22,6 +24,14 @@ public class Rocket {
 
     public void setStatus(RocketStatus status) {
         this.status = status;
+    }
+
+    public Mission getCurrentMission() {
+        return currentMission;
+    }
+
+    public void setCurrentMission(Mission currentMission) {
+        this.currentMission = currentMission;
     }
 
     @Override

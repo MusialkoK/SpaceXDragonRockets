@@ -17,9 +17,29 @@ public class MissionStatusService implements MissionStatusServiceInterface {
     }
 
     @Override
-    public boolean changeStatusToPending(Mission mission) {
-        if(mission == null) return false;
-        mission.setStatus(MissionStatus.PENDING);
-        return true;
+    public MissionStatus changeStatusToPending(Mission mission) {
+        return changeMissionStatusTo(mission, MissionStatus.PENDING);
+    }
+
+    @Override
+    public MissionStatus changeStatusToScheduled(Mission mission) {
+        return changeMissionStatusTo(mission, MissionStatus.SCHEDULED);
+    }
+
+    @Override
+    public MissionStatus changeStatusToInProgress(Mission mission) {
+        return changeMissionStatusTo(mission, MissionStatus.IN_PROGRESS);
+
+    }
+
+    @Override
+    public MissionStatus changeStatusToInEnded(Mission mission) {
+        return changeMissionStatusTo(mission, MissionStatus.ENDED);
+    }
+
+    private MissionStatus changeMissionStatusTo(Mission mission, MissionStatus status){
+        if(mission == null) return null;
+        mission.setStatus(status);
+        return status;
     }
 }
