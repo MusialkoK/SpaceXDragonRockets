@@ -7,8 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class RocketStatusServiceTest {
@@ -26,6 +25,17 @@ class RocketStatusServiceTest {
         //then
         assertTrue(inSpace);
         assertEquals(RocketStatus.IN_SPACE, rocket.getStatus());
+    }
+    @Test
+    void ifRocketIsNullReturnFalse() {
+        //given
+        Rocket rocket = null;
+
+        //when
+        boolean inSpace = rocketStatusService.changeStatusToInSpace(rocket);
+
+        //then
+        assertFalse(inSpace);
     }
 
 }

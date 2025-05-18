@@ -7,6 +7,7 @@ import com.kmu.service.RocketStatusServiceInterface;
 public class RocketStatusService implements RocketStatusServiceInterface {
     @Override
     public boolean changeStatusToInSpace(Rocket rocket) {
+        if(rocket == null) return false;
         rocket.setStatus(RocketStatus.IN_SPACE);
         return true;
     }
