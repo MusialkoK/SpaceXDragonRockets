@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Rocket {
 
     private final String name;
-    private final RocketStatus status;
+    private RocketStatus status;
 
     public Rocket(String name) {
         this.name = name;
@@ -18,6 +18,10 @@ public class Rocket {
 
     public RocketStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(RocketStatus status) {
+        this.status = status;
     }
 
     @Override
