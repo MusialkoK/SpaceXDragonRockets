@@ -38,4 +38,16 @@ class MissionStatusServiceTest {
         assertFalse(isPending);
     }
 
+    @Test
+    void isSingleton(){
+        //given + when
+        MissionStatusService missionStatusService1 = MissionStatusService.getInstance();
+        MissionStatusService missionStatusService2 = MissionStatusService.getInstance();
+
+        //then
+
+        assertNotNull(missionStatusService1);
+        assertEquals(missionStatusService1, missionStatusService2);
+    }
+
 }

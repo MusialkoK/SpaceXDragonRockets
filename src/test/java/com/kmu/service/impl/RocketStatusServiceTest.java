@@ -38,4 +38,16 @@ class RocketStatusServiceTest {
         assertFalse(inSpace);
     }
 
+    @Test
+    void isSingleton(){
+        //given + when
+        RocketStatusService rocketStatusService1 = RocketStatusService.getInstance();
+        RocketStatusService rocketStatusService2 = RocketStatusService.getInstance();
+
+        //then
+
+        assertNotNull(rocketStatusService1);
+        assertEquals(rocketStatusService1, rocketStatusService2);
+    }
+
 }
