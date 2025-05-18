@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Mission {
 
     private final String name;
-    private final MissionStatus status;
+    private MissionStatus status;
 
     public Mission(String name) {
         this.name = name;
@@ -18,6 +18,10 @@ public class Mission {
 
     public MissionStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(MissionStatus status) {
+        this.status = status;
     }
 
     @Override

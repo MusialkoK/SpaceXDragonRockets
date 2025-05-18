@@ -1,4 +1,4 @@
-package dataobjects;
+package com.kmu.dataobjects;
 
 import com.kmu.dataobject.Rocket;
 import com.kmu.dataobject.RocketStatus;

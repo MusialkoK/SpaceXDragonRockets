@@ -1,7 +1,6 @@
-package service;
+package com.kmu.service.impl;
 
 import com.kmu.dataobject.Rocket;
-import com.kmu.service.impl.RocketService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
