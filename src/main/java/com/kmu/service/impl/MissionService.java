@@ -23,6 +23,7 @@ public class MissionService implements MissionServiceInterface {
 
     @Override
     public MissionStatus updateMissionStatus(Mission mission) {
+        if(mission == null) return null;
         Set<Rocket> assignedRockets = mission.getAssignedRockets();
         if(assignedRockets.isEmpty()){
             missionStatusService.changeStatusToScheduled(mission);
