@@ -111,6 +111,5 @@ class RocketServiceTest {
 
         assertNotNull(rocketService1);
         assertEquals(rocketService1, rocketService2);
-
     }
 }

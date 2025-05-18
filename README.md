@@ -1,7 +1,7 @@
 4 services with following methods:
 RocketService
     addNewRocket
-    assignToMission
+    assignRocketToMission
     getRocketSummary
 RocketStatusService
     setOnGroundStatus
