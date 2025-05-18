@@ -24,12 +24,12 @@ public class Rocket {
     public boolean equals(Object object) {
         if (this == object) return true;
         if (!(object instanceof Rocket rocket)) return false;
-        return Objects.equals(getName(), rocket.getName()) && getStatus() == rocket.getStatus();
+        return Objects.equals(getName(), rocket.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getStatus());
+        return Objects.hash(getName());
     }
 
     @Override
