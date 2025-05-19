@@ -5,4 +5,6 @@ import com.kmu.dataobject.Rocket;
 public interface RocketStatusServiceInterface {
 
     boolean changeStatusToInSpace(Rocket rocket);
+
+    boolean changeStatusToInRepair(Rocket rocket);
 }
