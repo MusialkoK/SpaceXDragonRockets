@@ -182,7 +182,17 @@ class MissionServiceTest {
         verify(missionSet, never()).add(any());
     }
 
+    @Test
+    void isSingleton(){
+        //given + when
+        MissionService missionService1 = MissionService.getInstance();
+        MissionService missionService2 = MissionService.getInstance();
 
+        //then
+
+        assertNotNull(missionService1);
+        assertEquals(missionService1, missionService2);
+    }
 
 
 }
