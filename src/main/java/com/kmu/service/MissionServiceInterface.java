@@ -10,4 +10,7 @@ public interface MissionServiceInterface {
     boolean addNewMission(Mission mission);
 
     boolean assignRocketsToMission(Mission mission, Collection<Rocket> rocketSet);
+
+    String getMissionsSummary();
+
 }

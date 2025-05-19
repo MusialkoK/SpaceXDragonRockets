@@ -1,5 +1,6 @@
 package com.kmu.dataobject;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -42,8 +43,13 @@ public class Mission {
         String header = String.format(MISSION_SUMMARY_HEADER_FORMAT, name, status.getStatusName(), assignedRockets.size());
         if(assignedRockets.isEmpty()) return header;
         return assignedRockets.stream()
+                .sorted(alphabetically())
                 .map(Rocket::getSummary)
                 .collect(Collectors.joining("\n", header + "\n",""));
+    }
+
+    private Comparator<Rocket> alphabetically(){
+        return Comparator.comparing(Rocket::getName);
     }
 
     @Override

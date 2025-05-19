@@ -5,8 +5,10 @@ import com.kmu.dataobject.Rocket;
 import com.kmu.service.MissionServiceInterface;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class MissionService implements MissionServiceInterface {
     private static MissionService instance;
@@ -42,6 +44,22 @@ public class MissionService implements MissionServiceInterface {
         return rocketSet.stream()
                 .map(rocket -> rocketService.assignRocketToMission(rocket,mission))
                 .allMatch(aBoolean -> aBoolean.equals(true));
+    }
+
+    @Override
+    public String getMissionsSummary() {
+        return missionSet.stream()
+                .sorted(byRocketCount().reversed().thenComparing(alphabetically().reversed()))
+                .map(Mission::getSummary)
+                .collect(Collectors.joining("\n"));
+    }
+
+    private Comparator<Mission> byRocketCount(){
+        return Comparator.comparingInt(mission -> mission.getAssignedRockets().size());
+    }
+
+    private Comparator<Mission> alphabetically(){
+        return Comparator.comparing(Mission::getName);
     }
 
     private boolean validateMissionName(String missionName){

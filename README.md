@@ -1,3 +1,5 @@
+[SpaceX_Dragon_Rockets_Repository.pdf](SpaceX_Dragon_Rockets_Repository.pdf)
+
 4 services with following methods:
 RocketService
     addNewRocket
@@ -23,7 +25,7 @@ Interface for every service.
 
 Used AI to find solution for Singleton testing
 First approach was to create maps(rocketName, rocket) but changed to set(rocket) as no access via name is mentioned
-
+For summary testing I'm adding feature that rockets will be shown in alphabetical order
 
 For tests:
 isSingleton - for every service
