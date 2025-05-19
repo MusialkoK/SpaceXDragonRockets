@@ -4,7 +4,6 @@ import com.kmu.model.Mission;
 import com.kmu.model.MissionStatus;
 import com.kmu.model.Rocket;
 import com.kmu.model.RocketStatus;
-import com.kmu.service.SpaceXService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,14 +57,13 @@ class SpaceXServiceTest {
     @Test
     void whenChangingRocketStatusButRocketNullReturnFalse() {
         //given
-        Rocket rocket = null;
 
         //when
-        boolean inRepair = spaceXService.changeRocketStatusToInRepair(rocket);
+        boolean inRepair = spaceXService.changeRocketStatusToInRepair(null);
 
         //then
         assertFalse(inRepair);
-        assertDoesNotThrow(() -> spaceXService.changeRocketStatusToInRepair(rocket));
+        assertDoesNotThrow(() -> spaceXService.changeRocketStatusToInRepair(null));
     }
 
     @Test
@@ -97,12 +95,11 @@ class SpaceXServiceTest {
     @Test
     void changeMissionStatusToEndedMissionNull() {
         //given
-        Mission mission = null;
         //when
-        boolean isStatusChanged = spaceXService.changeMissionStatusToEnded(mission);
+        boolean isStatusChanged = spaceXService.changeMissionStatusToEnded(null);
         //then
         assertFalse(isStatusChanged);
-        assertDoesNotThrow(() -> spaceXService.changeMissionStatusToEnded(mission));
+        assertDoesNotThrow(() -> spaceXService.changeMissionStatusToEnded(null));
     }
 
     @Test
@@ -128,18 +125,17 @@ class SpaceXServiceTest {
     @Test
     void assignRocketToMissionReturnFalseIfMissionNull() {
         //given
-        Mission mission = null;
         Rocket rocket = new Rocket("Dragon 1");
 
         //when
-        boolean isAssigned = spaceXService.assignRocketToMission(rocket, mission);
+        boolean isAssigned = spaceXService.assignRocketToMission(rocket, null);
         //then
         assertFalse(isAssigned);
-        verify(rocketService, never()).assignRocketToMission(rocket, mission);
+        verify(rocketService, never()).assignRocketToMission(rocket, null);
         verify(rocketStatusService, never()).changeStatusToInSpace(rocket);
-        verify(missionService, never()).addRocketToMission(rocket, mission);
-        verify(missionStatusService, never()).updateMissionStatus(mission);
-        assertDoesNotThrow(() -> spaceXService.assignRocketToMission(rocket, mission));
+        verify(missionService, never()).addRocketToMission(rocket, null);
+        verify(missionStatusService, never()).updateMissionStatus(null);
+        assertDoesNotThrow(() -> spaceXService.assignRocketToMission(rocket, null));
 
     }
 
@@ -147,17 +143,16 @@ class SpaceXServiceTest {
     void assignRocketToMissionReturnFalseIfRocketNull() {
         //given
         Mission mission = new Mission("Luna");
-        Rocket rocket = null;
 
         //when
-        boolean isAssigned = spaceXService.assignRocketToMission(rocket, mission);
+        boolean isAssigned = spaceXService.assignRocketToMission(null, mission);
         //then
         assertFalse(isAssigned);
-        verify(rocketService, never()).assignRocketToMission(rocket, mission);
-        verify(rocketStatusService, never()).changeStatusToInSpace(rocket);
-        verify(missionService, never()).addRocketToMission(rocket, mission);
+        verify(rocketService, never()).assignRocketToMission(null, mission);
+        verify(rocketStatusService, never()).changeStatusToInSpace(null);
+        verify(missionService, never()).addRocketToMission(null, mission);
         verify(missionStatusService, never()).updateMissionStatus(mission);
-        assertDoesNotThrow(() -> spaceXService.assignRocketToMission(rocket, mission));
+        assertDoesNotThrow(() -> spaceXService.assignRocketToMission(null, mission));
     }
 
     @Test
@@ -201,16 +196,15 @@ class SpaceXServiceTest {
         Rocket rocket = new Rocket("Dragon 1");
         Rocket rocket2 = new Rocket("Dragon 2");
 
-        Mission mission = null;
 
         Set<Rocket> rocketSet = Set.of(rocket, rocket2);
 
         //when
-        boolean success = spaceXService.assignRocketsToMission(mission, rocketSet);
+        boolean success = spaceXService.assignRocketsToMission(null, rocketSet);
 
         //then
         assertFalse(success);
-        assertDoesNotThrow(() -> spaceXService.assignRocketsToMission(mission, rocketSet));
+        assertDoesNotThrow(() -> spaceXService.assignRocketsToMission(null, rocketSet));
 
 
     }

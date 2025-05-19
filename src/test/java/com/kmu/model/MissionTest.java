@@ -1,6 +1,6 @@
 package com.kmu.model;
 
-import com.kmu.service.SpaceXService;
+import com.kmu.service.impl.SpaceXService;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;

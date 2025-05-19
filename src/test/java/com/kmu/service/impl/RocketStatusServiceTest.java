@@ -32,10 +32,8 @@ class RocketStatusServiceTest {
     @Test
     void ifRocketIsNullWhenChangeToInSpaceReturnFalse() {
         //given
-        Rocket rocket = null;
-
         //when
-        boolean inSpace = rocketStatusService.changeStatusToInSpace(rocket);
+        boolean inSpace = rocketStatusService.changeStatusToInSpace(null);
 
         //then
         assertFalse(inSpace);
@@ -84,10 +82,9 @@ class RocketStatusServiceTest {
     @Test
     void ifRocketIsNullWhenChangeToInRepairReturnFalse() {
         //given
-        Rocket rocket = null;
 
         //when
-        boolean inRepair = rocketStatusService.changeStatusToInRepair(rocket);
+        boolean inRepair = rocketStatusService.changeStatusToInRepair(null);
 
         //then
         assertFalse(inRepair);
@@ -109,10 +106,9 @@ class RocketStatusServiceTest {
     @Test
     void ifRocketIsNullWhenChangeToOnGroundReturnFalse() {
         //given
-        Rocket rocket = null;
 
         //when
-        boolean inSpace = rocketStatusService.changeStatusToOnGround(rocket);
+        boolean inSpace = rocketStatusService.changeStatusToOnGround(null);
 
         //then
         assertFalse(inSpace);

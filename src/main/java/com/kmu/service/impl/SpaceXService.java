@@ -1,12 +1,9 @@
-package com.kmu.service;
+package com.kmu.service.impl;
 
 import com.kmu.model.Mission;
 import com.kmu.model.Rocket;
 import com.kmu.model.RocketStatus;
-import com.kmu.service.impl.MissionService;
-import com.kmu.service.impl.MissionStatusService;
-import com.kmu.service.impl.RocketService;
-import com.kmu.service.impl.RocketStatusService;
+import com.kmu.service.SpaceXServiceInterface;
 
 import java.util.Collection;
 
@@ -64,6 +61,21 @@ public class SpaceXService implements SpaceXServiceInterface {
         return rocketSet.stream()
                 .map(rocket -> assignRocketToMission(rocket,mission))
                 .allMatch(aBoolean -> aBoolean.equals(true));
+    }
+
+    @Override
+    public boolean addNewMission(Mission mission) {
+        return missionService.addNewMission(mission);
+    }
+
+    @Override
+    public String getMissionsSummary() {
+        return missionService.getMissionsSummary();
+    }
+
+    @Override
+    public boolean addNewRocket(Rocket rocket) {
+        return rocketService.addNewRocket(rocket);
     }
 
     private void unAssignRocketToMission(Rocket rocket){

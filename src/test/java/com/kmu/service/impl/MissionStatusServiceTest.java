@@ -72,14 +72,12 @@ class MissionStatusServiceTest {
     @Test
     void returnNullIfMissionNull(){
         //given
-        Mission mission = null;
-
         //when
-        MissionStatus status = missionStatusService.updateMissionStatus(mission);
+        MissionStatus status = missionStatusService.updateMissionStatus(null);
 
         //then
         assertNull(status);
-        assertDoesNotThrow(() ->missionStatusService.updateMissionStatus(mission));
+        assertDoesNotThrow(() ->missionStatusService.updateMissionStatus(null));
 
     }
 
@@ -98,13 +96,12 @@ class MissionStatusServiceTest {
     @Test
     void ifMissionIsNullOnChangeToPendingReturnNull() {
         //given
-        Mission mission = null;
         //when
-        boolean status = missionStatusService.changeStatusToPending(mission);
+        boolean status = missionStatusService.changeStatusToPending(null);
 
         //then
         assertFalse(status);
-        assertDoesNotThrow(() ->missionStatusService.changeStatusToPending(mission));
+        assertDoesNotThrow(() ->missionStatusService.changeStatusToPending(null));
 
     }
 
@@ -136,13 +133,12 @@ class MissionStatusServiceTest {
     @Test
     void ifMissionIsNullOnChangeToScheduleReturnNull() {
         //given
-        Mission mission = null;
         //when
-        boolean status = missionStatusService.changeStatusToScheduled(mission);
+        boolean status = missionStatusService.changeStatusToScheduled(null);
 
         //then
         assertFalse(status);
-        assertDoesNotThrow(() ->missionStatusService.changeStatusToScheduled(mission));
+        assertDoesNotThrow(() ->missionStatusService.changeStatusToScheduled(null));
     }
 
     @Test
@@ -161,13 +157,12 @@ class MissionStatusServiceTest {
     @Test
     void ifMissionIsNullOnChangeToInProgressReturnNull() {
         //given
-        Mission mission = null;
         //when
-        boolean status = missionStatusService.changeStatusToInProgress(mission);
+        boolean status = missionStatusService.changeStatusToInProgress(null);
 
         //then
         assertFalse(status);
-        assertDoesNotThrow(() ->missionStatusService.changeStatusToInProgress(mission));
+        assertDoesNotThrow(() ->missionStatusService.changeStatusToInProgress(null));
 
     }
 
@@ -187,13 +182,12 @@ class MissionStatusServiceTest {
     @Test
     void ifMissionIsNullOnChangeToEndedReturnNull() {
         //given
-        Mission mission = null;
         //when
-        boolean status = missionStatusService.changeStatusToEnded(mission);
+        boolean status = missionStatusService.changeStatusToEnded(null);
 
         //then
         assertFalse(status);
-        assertDoesNotThrow(() ->missionStatusService.changeStatusToEnded(mission));
+        assertDoesNotThrow(() ->missionStatusService.changeStatusToEnded(null));
 
     }
 }

@@ -20,7 +20,7 @@ class RocketServiceTest {
 
     private RocketService rocketService;
     @Spy
-    private Set<Rocket> rocketSet = new HashSet<>();
+    private final Set<Rocket> rocketSet = new HashSet<>();
 
     @BeforeEach
     void setUp() {
@@ -45,11 +45,9 @@ class RocketServiceTest {
     @Test
     void doNotAddRocketWithNullName() {
         //given
-        String rocketName = null;
-        Rocket rocket = new Rocket(rocketName);
 
         //when
-        boolean isAdded = rocketService.addNewRocket(rocket);
+        boolean isAdded = rocketService.addNewRocket(null);
         //then
         assertFalse(isAdded);
         verify(rocketSet, never()).add(any());
@@ -90,10 +88,9 @@ class RocketServiceTest {
     @Test
     void doNotAddIfRocketNull() {
         //given
-        Rocket rocket = null;
 
         //when
-        boolean isAdded = rocketService.addNewRocket(rocket);
+        boolean isAdded = rocketService.addNewRocket(null);
         //then
         assertFalse(isAdded);
         verify(rocketSet, never()).add(any());
@@ -144,9 +141,8 @@ class RocketServiceTest {
     @Test
     void clearRocketCurrentMissionRocketNull(){
         //given + when
-        Rocket rocket = null;
 
         //then
-        assertDoesNotThrow(() -> rocketService.clearRocketCurrentMission(rocket));
+        assertDoesNotThrow(() -> rocketService.clearRocketCurrentMission(null));
     }
 }

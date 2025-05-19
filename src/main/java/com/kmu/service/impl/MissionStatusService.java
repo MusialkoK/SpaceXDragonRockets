@@ -4,11 +4,10 @@ import com.kmu.model.Mission;
 import com.kmu.model.MissionStatus;
 import com.kmu.model.Rocket;
 import com.kmu.model.RocketStatus;
-import com.kmu.service.MissionStatusServiceInterface;
 
 import java.util.Set;
 
-public class MissionStatusService implements MissionStatusServiceInterface {
+public class MissionStatusService{
 
     private static MissionStatusService instance;
 
@@ -20,29 +19,25 @@ public class MissionStatusService implements MissionStatusServiceInterface {
     private MissionStatusService() {
     }
 
-    @Override
-    public boolean changeStatusToPending(Mission mission) {
+    boolean changeStatusToPending(Mission mission) {
         return changeMissionStatusTo(mission, MissionStatus.PENDING);
     }
 
-    @Override
-    public boolean changeStatusToScheduled(Mission mission) {
+    boolean changeStatusToScheduled(Mission mission) {
         return changeMissionStatusTo(mission, MissionStatus.SCHEDULED);
     }
 
-    @Override
-    public boolean changeStatusToInProgress(Mission mission) {
+
+    boolean changeStatusToInProgress(Mission mission) {
         return changeMissionStatusTo(mission, MissionStatus.IN_PROGRESS);
 
     }
 
-    @Override
-    public boolean changeStatusToEnded(Mission mission) {
+    boolean changeStatusToEnded(Mission mission) {
         return changeMissionStatusTo(mission, MissionStatus.ENDED);
     }
 
-    @Override
-    public MissionStatus updateMissionStatus(Mission mission) {
+    MissionStatus updateMissionStatus(Mission mission) {
         if(mission == null) return null;
         Set<Rocket> assignedRockets = mission.getAssignedRockets();
         if(assignedRockets.isEmpty()){

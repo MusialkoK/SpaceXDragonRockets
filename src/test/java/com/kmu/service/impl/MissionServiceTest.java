@@ -2,7 +2,6 @@ package com.kmu.service.impl;
 
 import com.kmu.model.Mission;
 import com.kmu.model.Rocket;
-import com.kmu.service.SpaceXService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,7 +20,7 @@ class MissionServiceTest {
     private MissionService missionService;
 
     @Spy
-    private Set<Mission> missionSet = new HashSet<>();
+    private final Set<Mission> missionSet = new HashSet<>();
 
     @BeforeEach
     void setUp() {
@@ -49,8 +47,7 @@ class MissionServiceTest {
     @Test
     void doNotAddMissionWithNullName() {
         //given
-        String missionName = null;
-        Mission mission = new Mission(missionName);
+        Mission mission = new Mission(null);
 
 
         //when
@@ -95,10 +92,9 @@ class MissionServiceTest {
     @Test
     void doNotAddIfRocketNull() {
         //given
-        Mission mission = null;
 
         //when
-        boolean isAdded = missionService.addNewMission(mission);
+        boolean isAdded = missionService.addNewMission(null);
 
         //then
         assertFalse(isAdded);
@@ -138,31 +134,29 @@ class MissionServiceTest {
     void addRocketToMissionNullReturnFalse(){
         //given
         Rocket rocket = new Rocket("Dragon 1");
-        Mission mission = null;
 
         //when
-        boolean added = missionService.addRocketToMission(rocket, mission);
+        boolean added = missionService.addRocketToMission(rocket, null);
 
         //then
 
         assertFalse(added);
-        assertDoesNotThrow(() -> missionService.addRocketToMission(rocket, mission));
+        assertDoesNotThrow(() -> missionService.addRocketToMission(rocket, null));
     }
 
     @Test
     void addRocketNullToMissionReturnFalse(){
         //given
-        Rocket rocket = null;
         Mission mission = new Mission("Luna");
 
         //when
-        boolean added = missionService.addRocketToMission(rocket, mission);
+        boolean added = missionService.addRocketToMission(null, mission);
 
         //then
 
         assertFalse(added);
         assertTrue(mission.getAssignedRockets().isEmpty());
-        assertDoesNotThrow(() -> missionService.addRocketToMission(rocket, mission));
+        assertDoesNotThrow(() -> missionService.addRocketToMission(null, mission));
     }
 
 
@@ -289,8 +283,7 @@ class MissionServiceTest {
     @Test
     void clearAssignedRocketsWhenMissionNull(){
         //given + when
-        Mission mission = null;
         //then
-        assertDoesNotThrow(() -> missionService.clearAssignedRockets(mission));
+        assertDoesNotThrow(() -> missionService.clearAssignedRockets(null));
     }
 }
