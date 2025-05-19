@@ -14,11 +14,6 @@ public class SpaceXService implements SpaceXServiceInterface {
         this.missionStatusService = missionStatusService;
     }
 
-    public SpaceXService() {
-        this.rocketStatusService = RocketStatusService.getInstance();
-        this.missionStatusService = MissionStatusService.getInstance();
-    }
-
     @Override
     public boolean changeRocketStatusToInRepair(Rocket rocket) {
         if(rocket == null) return false;
