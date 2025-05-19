@@ -1,8 +1,5 @@
-package com.kmu.dataobjects;
+package com.kmu.model;
 
-import com.kmu.dataobject.Mission;
-import com.kmu.dataobject.MissionStatus;
-import com.kmu.dataobject.Rocket;
 import com.kmu.service.impl.MissionService;
 import org.junit.jupiter.api.Test;
 
@@ -50,7 +47,6 @@ class MissionTest {
         String summary = mission.getSummary();
 
         //then
-
         assertEquals(summary, summaryHeader);
     }
 

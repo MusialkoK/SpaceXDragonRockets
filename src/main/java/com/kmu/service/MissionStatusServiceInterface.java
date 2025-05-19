@@ -1,7 +1,7 @@
 package com.kmu.service;
 
-import com.kmu.dataobject.Mission;
-import com.kmu.dataobject.MissionStatus;
+import com.kmu.model.Mission;
+import com.kmu.model.MissionStatus;
 
 public interface MissionStatusServiceInterface {
 
@@ -9,7 +9,7 @@ public interface MissionStatusServiceInterface {
     MissionStatus changeStatusToScheduled(Mission mission);
     MissionStatus changeStatusToInProgress(Mission mission);
 
-    MissionStatus changeStatusToInEnded(Mission mission);
+    MissionStatus changeStatusToEnded(Mission mission);
 
     MissionStatus updateMissionStatus(Mission mission);
 }

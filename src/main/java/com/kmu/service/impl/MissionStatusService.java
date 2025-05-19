@@ -1,9 +1,9 @@
 package com.kmu.service.impl;
 
-import com.kmu.dataobject.Mission;
-import com.kmu.dataobject.MissionStatus;
-import com.kmu.dataobject.Rocket;
-import com.kmu.dataobject.RocketStatus;
+import com.kmu.model.Mission;
+import com.kmu.model.MissionStatus;
+import com.kmu.model.Rocket;
+import com.kmu.model.RocketStatus;
 import com.kmu.service.MissionStatusServiceInterface;
 
 import java.util.HashSet;
@@ -38,7 +38,7 @@ public class MissionStatusService implements MissionStatusServiceInterface {
     }
 
     @Override
-    public MissionStatus changeStatusToInEnded(Mission mission) {
+    public MissionStatus changeStatusToEnded(Mission mission) {
         if(mission == null) return null;
         RocketStatusService rocketStatusService = RocketStatusService.getInstance();
         mission.getAssignedRockets().forEach(rocket -> {

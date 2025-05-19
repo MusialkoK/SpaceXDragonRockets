@@ -1,9 +1,9 @@
 package com.kmu.service.impl;
 
-import com.kmu.dataobject.Mission;
-import com.kmu.dataobject.MissionStatus;
-import com.kmu.dataobject.Rocket;
-import com.kmu.dataobject.RocketStatus;
+import com.kmu.model.Mission;
+import com.kmu.model.MissionStatus;
+import com.kmu.model.Rocket;
+import com.kmu.model.RocketStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -173,7 +173,7 @@ class MissionStatusServiceTest {
         Mission mission = new Mission("Luna");
         missionStatusService.changeStatusToInProgress(mission);
         //when
-        MissionStatus status = missionStatusService.changeStatusToInEnded(mission);
+        MissionStatus status = missionStatusService.changeStatusToEnded(mission);
 
         //then
         assertEquals(MissionStatus.ENDED, mission.getStatus());
@@ -189,7 +189,7 @@ class MissionStatusServiceTest {
         MissionService missionService = MissionService.getInstance();
         missionService.assignRocketsToMission(mission, Set.of(rocket1, rocket2));
         //when
-        MissionStatus status = missionStatusService.changeStatusToInEnded(mission);
+        MissionStatus status = missionStatusService.changeStatusToEnded(mission);
 
         //then
         assertEquals(MissionStatus.ENDED, mission.getStatus());
@@ -205,7 +205,7 @@ class MissionStatusServiceTest {
         //given
         Mission mission = null;
         //when
-        MissionStatus status = missionStatusService.changeStatusToInEnded(mission);
+        MissionStatus status = missionStatusService.changeStatusToEnded(mission);
 
         //then
         assertNull(status);

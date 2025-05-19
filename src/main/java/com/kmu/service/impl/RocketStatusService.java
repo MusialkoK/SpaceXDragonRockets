@@ -1,7 +1,7 @@
 package com.kmu.service.impl;
 
-import com.kmu.dataobject.Rocket;
-import com.kmu.dataobject.RocketStatus;
+import com.kmu.model.Rocket;
+import com.kmu.model.RocketStatus;
 import com.kmu.service.RocketStatusServiceInterface;
 
 public class RocketStatusService implements RocketStatusServiceInterface {

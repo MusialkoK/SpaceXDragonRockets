@@ -1,4 +1,4 @@
-package com.kmu.dataobject;
+package com.kmu.model;
 
 import java.util.Comparator;
 import java.util.HashSet;

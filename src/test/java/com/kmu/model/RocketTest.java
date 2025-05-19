@@ -1,7 +1,5 @@
-package com.kmu.dataobjects;
+package com.kmu.model;
 
-import com.kmu.dataobject.Rocket;
-import com.kmu.dataobject.RocketStatus;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

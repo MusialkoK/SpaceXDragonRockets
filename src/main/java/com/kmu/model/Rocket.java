@@ -1,4 +1,4 @@
-package com.kmu.dataobject;
+package com.kmu.model;
 
 import java.util.Objects;
 
