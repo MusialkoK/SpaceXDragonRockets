@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class Rocket {
 
+    private static final String SUMMARY_FORMAT = "  ◦ %s - %s\n";
+
     private final String name;
     private RocketStatus status;
 
@@ -52,5 +54,9 @@ public class Rocket {
                 "name='" + name + '\'' +
                 ", status=" + status +
                 '}';
+    }
+
+    public String getSummary() {
+        return String.format(SUMMARY_FORMAT, name, status.getStatusName());
     }
 }

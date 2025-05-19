@@ -28,4 +28,20 @@ class RocketTest {
         //then
         assertEquals(rocket.getName(), testName);
     }
+
+    @Test
+    void rocketSummaryInFormat() {
+        //given
+        String rocketSummaryFormat = "  ◦ %s - %s\n";
+
+        String rocketName = "Dragon 1";
+        Rocket rocket = new Rocket(rocketName);
+        String statusName = rocket.getStatus().getStatusName();
+
+        //when
+        String summary = rocket.getSummary();
+
+        //then
+        assertEquals(String.format(rocketSummaryFormat, rocketName, statusName), summary);
+    }
 }
