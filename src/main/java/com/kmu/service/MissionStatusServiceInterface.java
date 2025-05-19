@@ -5,11 +5,10 @@ import com.kmu.model.MissionStatus;
 
 public interface MissionStatusServiceInterface {
 
-    MissionStatus changeStatusToPending(Mission mission);
-    MissionStatus changeStatusToScheduled(Mission mission);
-    MissionStatus changeStatusToInProgress(Mission mission);
-
-    MissionStatus changeStatusToEnded(Mission mission);
+    boolean changeStatusToPending(Mission mission);
+    boolean changeStatusToScheduled(Mission mission);
+    boolean changeStatusToInProgress(Mission mission);
+    boolean changeStatusToEnded(Mission mission);
 
     MissionStatus updateMissionStatus(Mission mission);
 }

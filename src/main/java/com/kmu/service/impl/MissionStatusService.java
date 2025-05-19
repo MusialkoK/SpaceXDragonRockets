@@ -21,23 +21,23 @@ public class MissionStatusService implements MissionStatusServiceInterface {
     }
 
     @Override
-    public MissionStatus changeStatusToPending(Mission mission) {
+    public boolean changeStatusToPending(Mission mission) {
         return changeMissionStatusTo(mission, MissionStatus.PENDING);
     }
 
     @Override
-    public MissionStatus changeStatusToScheduled(Mission mission) {
+    public boolean changeStatusToScheduled(Mission mission) {
         return changeMissionStatusTo(mission, MissionStatus.SCHEDULED);
     }
 
     @Override
-    public MissionStatus changeStatusToInProgress(Mission mission) {
+    public boolean changeStatusToInProgress(Mission mission) {
         return changeMissionStatusTo(mission, MissionStatus.IN_PROGRESS);
 
     }
 
     @Override
-    public MissionStatus changeStatusToEnded(Mission mission) {
+    public boolean changeStatusToEnded(Mission mission) {
         return changeMissionStatusTo(mission, MissionStatus.ENDED);
     }
 
@@ -57,10 +57,10 @@ public class MissionStatusService implements MissionStatusServiceInterface {
         return MissionStatus.IN_PROGRESS;
     }
 
-    private MissionStatus changeMissionStatusTo(Mission mission, MissionStatus status){
-        if(mission == null) return null;
+    private boolean changeMissionStatusTo(Mission mission, MissionStatus status){
+        if(mission == null) return false;
         mission.setStatus(status);
-        return status;
+        return true;
     }
 
     private boolean hasAtLeastOneRocketInRepair(Set<Rocket> assignedRockets){

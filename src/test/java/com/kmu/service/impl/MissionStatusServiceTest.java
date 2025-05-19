@@ -88,11 +88,11 @@ class MissionStatusServiceTest {
         //given
         Mission mission = new Mission("Luna");
         //when
-        MissionStatus status = missionStatusService.changeStatusToPending(mission);
+        boolean status = missionStatusService.changeStatusToPending(mission);
 
         //then
         assertEquals(MissionStatus.PENDING, mission.getStatus());
-        assertEquals(MissionStatus.PENDING, status);
+        assertTrue(status);
     }
 
     @Test
@@ -100,10 +100,10 @@ class MissionStatusServiceTest {
         //given
         Mission mission = null;
         //when
-        MissionStatus status = missionStatusService.changeStatusToPending(mission);
+        boolean status = missionStatusService.changeStatusToPending(mission);
 
         //then
-        assertNull(status);
+        assertFalse(status);
         assertDoesNotThrow(() ->missionStatusService.changeStatusToPending(mission));
 
     }
@@ -126,11 +126,11 @@ class MissionStatusServiceTest {
         Mission mission = new Mission("Luna");
         missionStatusService.changeStatusToPending(mission);
         //when
-        MissionStatus status = missionStatusService.changeStatusToScheduled(mission);
+        boolean status = missionStatusService.changeStatusToScheduled(mission);
 
         //then
+        assertTrue(status);
         assertEquals(MissionStatus.SCHEDULED, mission.getStatus());
-        assertEquals(MissionStatus.SCHEDULED, status);
     }
 
     @Test
@@ -138,10 +138,10 @@ class MissionStatusServiceTest {
         //given
         Mission mission = null;
         //when
-        MissionStatus status = missionStatusService.changeStatusToScheduled(mission);
+        boolean status = missionStatusService.changeStatusToScheduled(mission);
 
         //then
-        assertNull(status);
+        assertFalse(status);
         assertDoesNotThrow(() ->missionStatusService.changeStatusToScheduled(mission));
     }
 
@@ -151,11 +151,11 @@ class MissionStatusServiceTest {
         Mission mission = new Mission("Luna");
         missionStatusService.changeStatusToPending(mission);
         //when
-        MissionStatus status = missionStatusService.changeStatusToInProgress(mission);
+        boolean status = missionStatusService.changeStatusToInProgress(mission);
 
         //then
+        assertTrue(status);
         assertEquals(MissionStatus.IN_PROGRESS, mission.getStatus());
-        assertEquals(MissionStatus.IN_PROGRESS, status);
     }
 
     @Test
@@ -163,10 +163,10 @@ class MissionStatusServiceTest {
         //given
         Mission mission = null;
         //when
-        MissionStatus status = missionStatusService.changeStatusToInProgress(mission);
+        boolean status = missionStatusService.changeStatusToInProgress(mission);
 
         //then
-        assertNull(status);
+        assertFalse(status);
         assertDoesNotThrow(() ->missionStatusService.changeStatusToInProgress(mission));
 
     }
@@ -177,11 +177,11 @@ class MissionStatusServiceTest {
         Mission mission = new Mission("Luna");
         mission.setStatus(MissionStatus.IN_PROGRESS);
         //when
-        MissionStatus status = missionStatusService.changeStatusToEnded(mission);
+        boolean status = missionStatusService.changeStatusToEnded(mission);
 
         //then
+        assertTrue(status);
         assertEquals(MissionStatus.ENDED, mission.getStatus());
-        assertEquals(MissionStatus.ENDED, status);
     }
 
     @Test
@@ -189,10 +189,10 @@ class MissionStatusServiceTest {
         //given
         Mission mission = null;
         //when
-        MissionStatus status = missionStatusService.changeStatusToEnded(mission);
+        boolean status = missionStatusService.changeStatusToEnded(mission);
 
         //then
-        assertNull(status);
+        assertFalse(status);
         assertDoesNotThrow(() ->missionStatusService.changeStatusToEnded(mission));
 
     }

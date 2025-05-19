@@ -77,7 +77,7 @@ class SpaceXServiceTest {
 
 
         doNothing().when(missionService).clearAssignedRockets(mission);
-        when(missionStatusService.changeStatusToEnded(mission)).thenReturn(null);
+        when(missionStatusService.changeStatusToEnded(mission)).thenReturn(true);
         when(rocketStatusService.changeStatusToOnGround(rocket)).thenReturn(true);
         doNothing().when(rocketService).clearRocketCurrentMission(rocket);
         //when
