@@ -1,4 +1,4 @@
-package com.kmu.dataobject;
+package com.kmu.model;
 
 public enum RocketStatus {
     ON_GROUND("On ground"),

@@ -1,9 +1,9 @@
 package com.kmu.service.impl;
 
-import com.kmu.dataobject.Mission;
-import com.kmu.dataobject.MissionStatus;
-import com.kmu.dataobject.Rocket;
-import com.kmu.dataobject.RocketStatus;
+import com.kmu.model.Mission;
+import com.kmu.model.MissionStatus;
+import com.kmu.model.Rocket;
+import com.kmu.model.RocketStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

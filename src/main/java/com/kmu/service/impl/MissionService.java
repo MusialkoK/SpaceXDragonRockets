@@ -1,7 +1,7 @@
 package com.kmu.service.impl;
 
-import com.kmu.dataobject.Mission;
-import com.kmu.dataobject.Rocket;
+import com.kmu.model.Mission;
+import com.kmu.model.Rocket;
 import com.kmu.service.MissionServiceInterface;
 
 import java.util.Collection;
