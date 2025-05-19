@@ -1,23 +1,37 @@
 package com.kmu.service.impl;
 
 import com.kmu.dataobject.Mission;
-import com.kmu.dataobject.MissionStatus;
 import com.kmu.dataobject.Rocket;
 import com.kmu.dataobject.RocketStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class MissionServiceTest {
 
-    @InjectMocks
     private MissionService missionService;
+
+    @Spy
+    private Set<Mission> missionSet = new HashSet<>();
+
+    @Mock
+    private RocketService rocketService;
+
+    @BeforeEach
+    void setUp() {
+        missionService = new MissionService(rocketService, missionSet);
+    }
 
 
     @Test
@@ -25,19 +39,16 @@ class MissionServiceTest {
         //given
         Rocket rocket = new Rocket("Dragon 1");
         Rocket rocket2 = new Rocket("Dragon 2");
-
         Mission mission = new Mission("Luna");
 
         Set<Rocket> rocketSet = Set.of(rocket, rocket2);
 
+        when(rocketService.assignRocketToMission(any(), any())).thenReturn(true).thenReturn(true);
         //when
         boolean success = missionService.assignRocketsToMission(mission, rocketSet);
 
         //then
         assertTrue(success);
-        assertEquals(rocketSet.size(), mission.getAssignedRockets().size());
-        assertEquals(MissionStatus.IN_PROGRESS, mission.getStatus());
-        rocketSet.forEach(aRocket -> assertionForSingleRocketIfSuccessfullyAssigned(aRocket, mission));
     }
 
     @Test
@@ -69,20 +80,13 @@ class MissionServiceTest {
         Mission mission = new Mission("Luna");
 
         Set<Rocket> rocketSet = Set.of(rocket, rocket2);
+        when(rocketService.assignRocketToMission(any(), any())).thenReturn(true).thenReturn(true);
 
         //when
         boolean success = missionService.assignRocketsToMission(mission, rocketSet);
 
         //then
         assertTrue(success);
-        assertEquals(rocketSet.size(), mission.getAssignedRockets().size());
-        assertEquals(MissionStatus.PENDING, mission.getStatus());
-        assertTrue(mission.getAssignedRockets().contains(rocket));
-        assertEquals(mission, rocket.getCurrentMission());
-        assertTrue(mission.getAssignedRockets().contains(rocket2));
-        assertEquals(mission, rocket2.getCurrentMission());
-        assertEquals(RocketStatus.IN_REPAIR, rocket.getStatus());
-        assertEquals(RocketStatus.IN_SPACE, rocket2.getStatus());
     }
 
     @Test
@@ -95,22 +99,90 @@ class MissionServiceTest {
         Mission mission = new Mission("Luna");
 
         Set<Rocket> rocketSet = Set.of(rocket, rocket2);
-        Set<Rocket> assignedRockets = Set.of(rocket2);
+        when(rocketService.assignRocketToMission(any(), any())).thenReturn(false).thenReturn(true);
 
         //when
         boolean success = missionService.assignRocketsToMission(mission, rocketSet);
 
         //then
         assertFalse(success);
-        assertEquals(assignedRockets.size(), mission.getAssignedRockets().size());
-        assertEquals(MissionStatus.IN_PROGRESS, mission.getStatus());
-        assignedRockets.forEach(aRocket -> assertionForSingleRocketIfSuccessfullyAssigned(aRocket, mission));
-        assertNull(rocket.getCurrentMission());
     }
 
-    private void assertionForSingleRocketIfSuccessfullyAssigned(Rocket rocket, Mission mission){
-        assertTrue(mission.getAssignedRockets().contains(rocket));
-        assertEquals(mission, rocket.getCurrentMission());
-        assertEquals(RocketStatus.IN_SPACE, rocket.getStatus());
+    @Test
+    void addMissionWithNotNullUniqueNameToSet() {
+        //given
+        String missionName = "Luna";
+        Mission mission = new Mission(missionName);
+
+        //when
+        boolean isAdded = missionService.addNewMission(mission);
+        //then
+        assertTrue(isAdded);
+        verify(missionSet, times(1)).add(mission);
+        assertTrue(missionSet.contains(mission));
+        assertEquals(1, missionSet.size());
     }
+
+    @Test
+    void doNotAddMissionWithNullName() {
+        //given
+        String missionName = null;
+        Mission mission = new Mission(missionName);
+
+
+        //when
+        boolean isAdded = missionService.addNewMission(mission);
+        //then
+        assertFalse(isAdded);
+        verify(missionSet, never()).add(any());
+    }
+
+    @Test
+    void doNotAddMissionWithEmptyName() {
+        //given
+        String missionName = "";
+        Mission mission = new Mission(missionName);
+
+
+        //when
+        boolean isAdded = missionService.addNewMission(mission);
+        //then
+        assertFalse(isAdded);
+        verify(missionSet, never()).add(any());
+    }
+
+    @Test
+    void doNotAddRocketIfNameNotUnique() {
+        //given
+        String missionName = "Luna";
+        Mission firstMission = new Mission(missionName);
+        Mission secondMission = new Mission(missionName);
+
+        missionService.addNewMission(firstMission);
+
+        //when
+        boolean isAdded = missionService.addNewMission(secondMission);
+        //then
+        assertFalse(isAdded);
+        verify(missionSet, times(1)).add(firstMission);
+        assertEquals(1,missionSet.size());
+
+    }
+
+    @Test
+    void doNotAddIfRocketNull() {
+        //given
+        Mission mission = null;
+
+        //when
+        boolean isAdded = missionService.addNewMission(mission);
+
+        //then
+        assertFalse(isAdded);
+        verify(missionSet, never()).add(any());
+    }
+
+
+
+
 }
