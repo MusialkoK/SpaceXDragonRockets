@@ -35,6 +35,11 @@ public class RocketStatusService implements RocketStatusServiceInterface {
         return true;
     }
 
+    @Override
+    public boolean changeStatusToOnGround(Rocket rocket) {
+        return changeStatusTo(rocket, RocketStatus.ON_GROUND);
+    }
+
     private boolean changeStatusTo(Rocket rocket, RocketStatus newStatus){
         if(rocket == null) return false;
         rocket.setStatus(newStatus);

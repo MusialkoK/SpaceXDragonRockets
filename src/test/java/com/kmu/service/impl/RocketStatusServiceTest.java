@@ -38,7 +38,7 @@ class RocketStatusServiceTest {
     }
 
     @Test
-    void ifRocketIsNullReturnFalse() {
+    void ifRocketIsNullWhenChangeToInSpaceReturnFalse() {
         //given
         Rocket rocket = null;
 
@@ -100,6 +100,31 @@ class RocketStatusServiceTest {
 
         //then
         assertFalse(inRepair);
+    }
+
+    @Test
+    void isStatusChangedToOnGround() {
+        //given
+        Rocket rocket = new Rocket("Dragon 1");
+
+        //when
+        boolean inSpace = rocketStatusService.changeStatusToOnGround(rocket);
+
+        //then
+        assertTrue(inSpace);
+        assertEquals(RocketStatus.ON_GROUND, rocket.getStatus());
+    }
+
+    @Test
+    void ifRocketIsNullWhenChangeToOnGroundReturnFalse() {
+        //given
+        Rocket rocket = null;
+
+        //when
+        boolean inSpace = rocketStatusService.changeStatusToOnGround(rocket);
+
+        //then
+        assertFalse(inSpace);
     }
 
 }
