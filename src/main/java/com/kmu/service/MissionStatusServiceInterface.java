@@ -10,4 +10,6 @@ public interface MissionStatusServiceInterface {
     MissionStatus changeStatusToInProgress(Mission mission);
 
     MissionStatus changeStatusToInEnded(Mission mission);
+
+    MissionStatus updateMissionStatus(Mission mission);
 }

@@ -15,7 +15,7 @@ public class RocketService implements RocketServiceInterface {
     private final Map<String, Rocket> rocketMap;
 
     private final RocketStatusService rocketStatusService = RocketStatusService.getInstance();
-    private final MissionService missionService = MissionService.getInstance();
+    private final MissionStatusService missionStatusService = MissionStatusService.getInstance();
 
     private RocketService(Map<String, Rocket> rocketMap) {
         this.rocketMap = rocketMap;
@@ -40,13 +40,18 @@ public class RocketService implements RocketServiceInterface {
         if(rocket == null || mission == null) return false;
         if(rocket.getStatus().equals(RocketStatus.IN_SPACE)) return false;
         rocket.setCurrentMission(mission);
-        rocketStatusService.changeStatusToInSpace(rocket);
+        changeRocketStatus(rocket);
         mission.addRocket(rocket);
-        missionService.updateMissionStatus(mission);
+        missionStatusService.updateMissionStatus(mission);
         return true;
     }
 
     private boolean validateRocketName(String rocketName){
         return rocketName == null || rocketName.isEmpty();
+    }
+
+    private void changeRocketStatus(Rocket rocket){
+        if(rocket.getStatus().equals(RocketStatus.IN_REPAIR)) return;
+        rocketStatusService.changeStatusToInSpace(rocket);
     }
 }

@@ -1,9 +1,13 @@
 package com.kmu.service;
 
 import com.kmu.dataobject.Mission;
-import com.kmu.dataobject.MissionStatus;
+import com.kmu.dataobject.Rocket;
+
+import java.util.Collection;
 
 public interface MissionServiceInterface {
 
-    MissionStatus updateMissionStatus(Mission mission);
+
+
+    boolean assignRocketsToMission(Mission mission, Collection<Rocket> rocketSet);
 }

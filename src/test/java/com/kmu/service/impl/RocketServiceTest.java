@@ -177,4 +177,23 @@ class RocketServiceTest {
         assertTrue(mission.getAssignedRockets().isEmpty());
         assertEquals(MissionStatus.SCHEDULED, mission.getStatus());
     }
+
+    @Test
+    void dontChangeRocketStatusToInSpaceIfInRepair() {
+        //given
+        Mission mission = new Mission("Luna");
+        Rocket rocket = new Rocket("Dragon 1");
+        rocket.setStatus(RocketStatus.IN_REPAIR);
+
+        //when
+        boolean isAssigned = rocketService.assignRocketToMission(rocket, mission);
+
+        //then
+        assertTrue(isAssigned);
+        assertEquals(RocketStatus.IN_REPAIR, rocket.getStatus());
+        assertEquals(mission, rocket.getCurrentMission());
+        assertTrue(mission.getAssignedRockets().contains(rocket));
+        assertEquals(1,mission.getAssignedRockets().size());
+        assertEquals(MissionStatus.PENDING, mission.getStatus());
+    }
 }
