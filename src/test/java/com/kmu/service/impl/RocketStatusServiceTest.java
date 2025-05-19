@@ -1,7 +1,6 @@
 package com.kmu.service.impl;
 
 import com.kmu.model.Mission;
-import com.kmu.model.MissionStatus;
 import com.kmu.model.Rocket;
 import com.kmu.model.RocketStatus;
 import org.junit.jupiter.api.Test;
@@ -67,7 +66,6 @@ class RocketStatusServiceTest {
         //then
         assertTrue(inRepair);
         assertEquals(RocketStatus.IN_REPAIR, rocket.getStatus());
-        assertEquals(MissionStatus.PENDING, rocket.getCurrentMission().getStatus());
     }
 
     @Test

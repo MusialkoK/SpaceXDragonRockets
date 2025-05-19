@@ -22,11 +22,7 @@ public class RocketStatusService implements RocketStatusServiceInterface {
 
     @Override
     public boolean changeStatusToInRepair(Rocket rocket) {
-        boolean result = changeStatusTo(rocket, RocketStatus.IN_REPAIR);
-        if(!result) return false;
-        MissionStatusService missionStatusService = MissionStatusService.getInstance();
-        missionStatusService.changeStatusToPending(rocket.getCurrentMission());
-        return true;
+        return changeStatusTo(rocket, RocketStatus.IN_REPAIR);
     }
 
     @Override
