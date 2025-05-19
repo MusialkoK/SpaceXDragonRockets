@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Rocket {
 
-    private static final String SUMMARY_FORMAT = "  ◦ %s - %s\n";
+    private static final String SUMMARY_FORMAT = "  - %s - %s";
 
     private final String name;
     private RocketStatus status;

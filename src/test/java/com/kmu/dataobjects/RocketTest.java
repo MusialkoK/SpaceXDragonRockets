@@ -32,7 +32,7 @@ class RocketTest {
     @Test
     void rocketSummaryInFormat() {
         //given
-        String rocketSummaryFormat = "  ◦ %s - %s\n";
+        String rocketSummaryFormat = "  - %s - %s";
 
         String rocketName = "Dragon 1";
         Rocket rocket = new Rocket(rocketName);

@@ -3,8 +3,11 @@ package com.kmu.dataobject;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Mission {
+
+    private static final String MISSION_SUMMARY_HEADER_FORMAT = "- %s - %s - Dragons: %d";
 
     private final String name;
     private MissionStatus status;
@@ -35,6 +38,13 @@ public class Mission {
     public void addRocket(Rocket rocket){
         assignedRockets.add(rocket);
     }
+    public String getSummary() {
+        String header = String.format(MISSION_SUMMARY_HEADER_FORMAT, name, status.getStatusName(), assignedRockets.size());
+        if(assignedRockets.isEmpty()) return header;
+        return assignedRockets.stream()
+                .map(Rocket::getSummary)
+                .collect(Collectors.joining("\n", header + "\n",""));
+    }
 
     @Override
     public boolean equals(Object object) {
@@ -55,4 +65,6 @@ public class Mission {
                 ", status=" + status +
                 '}';
     }
+
+
 }
