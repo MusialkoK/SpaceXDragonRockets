@@ -194,8 +194,10 @@ class MissionStatusServiceTest {
         //then
         assertEquals(MissionStatus.ENDED, mission.getStatus());
         assertEquals(MissionStatus.ENDED, status);
-        assertEquals(2, mission.getAssignedRockets().size());
+        assertEquals(0, mission.getAssignedRockets().size());
         assertTrue(mission.getAssignedRockets().stream().allMatch(rocket -> rocket.getStatus().equals(RocketStatus.ON_GROUND)));
+        assertNull(rocket1.getCurrentMission());
+        assertNull(rocket2.getCurrentMission());
     }
 
     @Test

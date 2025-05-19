@@ -6,6 +6,7 @@ import com.kmu.dataobject.Rocket;
 import com.kmu.dataobject.RocketStatus;
 import com.kmu.service.MissionStatusServiceInterface;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class MissionStatusService implements MissionStatusServiceInterface {
@@ -40,7 +41,11 @@ public class MissionStatusService implements MissionStatusServiceInterface {
     public MissionStatus changeStatusToInEnded(Mission mission) {
         if(mission == null) return null;
         RocketStatusService rocketStatusService = RocketStatusService.getInstance();
-        mission.getAssignedRockets().forEach(rocketStatusService::changeStatusToOnGround);
+        mission.getAssignedRockets().forEach(rocket -> {
+            rocketStatusService.changeStatusToOnGround(rocket);
+            rocket.setCurrentMission(null);
+        });
+        mission.setAssignedRockets(new HashSet<>());
         return changeMissionStatusTo(mission, MissionStatus.ENDED);
     }
 

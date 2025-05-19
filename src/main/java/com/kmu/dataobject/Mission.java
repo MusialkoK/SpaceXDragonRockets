@@ -13,7 +13,7 @@ public class Mission {
     private final String name;
     private MissionStatus status;
 
-    private final Set<Rocket> assignedRockets = new HashSet<>();
+    private Set<Rocket> assignedRockets = new HashSet<>();
 
     public Mission(String name) {
         this.name = name;
@@ -34,6 +34,10 @@ public class Mission {
 
     public Set<Rocket> getAssignedRockets() {
         return assignedRockets;
+    }
+
+    public void setAssignedRockets(Set<Rocket> assignedRockets) {
+        this.assignedRockets = assignedRockets;
     }
 
     public void addRocket(Rocket rocket){
