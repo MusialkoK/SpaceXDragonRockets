@@ -4,25 +4,18 @@ import com.kmu.dataobject.Mission;
 import com.kmu.dataobject.MissionStatus;
 import com.kmu.dataobject.Rocket;
 import com.kmu.dataobject.RocketStatus;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Spy;
+import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class RocketStatusServiceTest {
-
+    @InjectMocks
     private RocketStatusService rocketStatusService;
-    @Spy
-    private MissionStatusService missionStatusService;
 
-    @BeforeEach
-    void setUp() {
-        rocketStatusService = new RocketStatusService(missionStatusService);
-    }
 
     @Test
     void isStatusChangedToInSpace() {

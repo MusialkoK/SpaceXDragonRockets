@@ -38,6 +38,8 @@ public class MissionStatusService implements MissionStatusServiceInterface {
 
     @Override
     public MissionStatus changeStatusToInEnded(Mission mission) {
+        RocketStatusService rocketStatusService = RocketStatusService.getInstance();
+        mission.getAssignedRockets().forEach(rocketStatusService::changeStatusToOnGround);
         return changeMissionStatusTo(mission, MissionStatus.ENDED);
     }
 

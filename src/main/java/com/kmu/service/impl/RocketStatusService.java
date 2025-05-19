@@ -7,19 +7,12 @@ import com.kmu.service.RocketStatusServiceInterface;
 public class RocketStatusService implements RocketStatusServiceInterface {
 
     private static RocketStatusService instance;
-    private final MissionStatusService missionStatusService;
-
     public static RocketStatusService getInstance(){
         if(instance == null) instance = new RocketStatusService();
         return instance;
     }
 
     private RocketStatusService() {
-        this.missionStatusService = MissionStatusService.getInstance();
-    }
-
-    RocketStatusService(MissionStatusService missionStatusService){
-        this.missionStatusService = missionStatusService;
     }
 
     @Override
@@ -31,6 +24,7 @@ public class RocketStatusService implements RocketStatusServiceInterface {
     public boolean changeStatusToInRepair(Rocket rocket) {
         boolean result = changeStatusTo(rocket, RocketStatus.IN_REPAIR);
         if(!result) return false;
+        MissionStatusService missionStatusService = MissionStatusService.getInstance();
         missionStatusService.changeStatusToPending(rocket.getCurrentMission());
         return true;
     }
