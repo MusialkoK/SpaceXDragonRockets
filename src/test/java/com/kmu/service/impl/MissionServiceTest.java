@@ -310,4 +310,24 @@ class MissionServiceTest {
         //then
         assertEquals(expected, summary);
     }
+
+    @Test
+    void clearAssignedRockets(){
+        //given
+        Mission mission = new Mission("Luna");
+        Rocket rocket = new Rocket("Dragon 1");
+        mission.getAssignedRockets().add(rocket);
+        ///when
+        missionService.clearAssignedRockets(mission);
+        //then
+        assertTrue(mission.getAssignedRockets().isEmpty());
+    }
+
+    @Test
+    void clearAssignedRocketsWhenMissionNull(){
+        //given + when
+        Mission mission = null;
+        //then
+        assertDoesNotThrow(() -> missionService.clearAssignedRockets(mission));
+    }
 }

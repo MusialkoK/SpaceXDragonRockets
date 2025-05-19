@@ -53,6 +53,12 @@ public class RocketService implements RocketServiceInterface {
         return true;
     }
 
+    public void clearRocketCurrentMission(Rocket rocket) {
+        if(rocket == null) return;
+        rocket.setCurrentMission(null);
+
+    }
+
     private boolean validateRocketName(String rocketName){
         return rocketName == null || rocketName.isEmpty();
     }

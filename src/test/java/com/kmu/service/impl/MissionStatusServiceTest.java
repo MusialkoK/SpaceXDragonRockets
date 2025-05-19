@@ -9,8 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -81,6 +79,7 @@ class MissionStatusServiceTest {
 
         //then
         assertNull(status);
+        assertDoesNotThrow(() ->missionStatusService.updateMissionStatus(mission));
 
     }
 
@@ -105,6 +104,8 @@ class MissionStatusServiceTest {
 
         //then
         assertNull(status);
+        assertDoesNotThrow(() ->missionStatusService.changeStatusToPending(mission));
+
     }
 
     @Test
@@ -141,6 +142,7 @@ class MissionStatusServiceTest {
 
         //then
         assertNull(status);
+        assertDoesNotThrow(() ->missionStatusService.changeStatusToScheduled(mission));
     }
 
     @Test
@@ -165,39 +167,21 @@ class MissionStatusServiceTest {
 
         //then
         assertNull(status);
+        assertDoesNotThrow(() ->missionStatusService.changeStatusToInProgress(mission));
+
     }
 
     @Test
     void isStatusChangedToEndedWithoutRocketsAssigned() {
         //given
         Mission mission = new Mission("Luna");
-        missionStatusService.changeStatusToInProgress(mission);
+        mission.setStatus(MissionStatus.IN_PROGRESS);
         //when
         MissionStatus status = missionStatusService.changeStatusToEnded(mission);
 
         //then
         assertEquals(MissionStatus.ENDED, mission.getStatus());
         assertEquals(MissionStatus.ENDED, status);
-    }
-
-    @Test
-    void isStatusChangedToEndedWithRocketsAssigned() {
-        //given
-        Mission mission = new Mission("Luna");
-        Rocket rocket1 = new Rocket("Dragon 1");
-        Rocket rocket2 = new Rocket("Dragon 2");
-        MissionService missionService = MissionService.getInstance();
-        missionService.assignRocketsToMission(mission, Set.of(rocket1, rocket2));
-        //when
-        MissionStatus status = missionStatusService.changeStatusToEnded(mission);
-
-        //then
-        assertEquals(MissionStatus.ENDED, mission.getStatus());
-        assertEquals(MissionStatus.ENDED, status);
-        assertEquals(0, mission.getAssignedRockets().size());
-        assertTrue(mission.getAssignedRockets().stream().allMatch(rocket -> rocket.getStatus().equals(RocketStatus.ON_GROUND)));
-        assertNull(rocket1.getCurrentMission());
-        assertNull(rocket2.getCurrentMission());
     }
 
     @Test
@@ -209,6 +193,7 @@ class MissionStatusServiceTest {
 
         //then
         assertNull(status);
-    }
+        assertDoesNotThrow(() ->missionStatusService.changeStatusToEnded(mission));
 
+    }
 }

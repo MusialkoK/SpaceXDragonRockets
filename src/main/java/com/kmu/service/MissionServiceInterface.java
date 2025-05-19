@@ -13,4 +13,6 @@ public interface MissionServiceInterface {
 
     String getMissionsSummary();
 
+    void clearAssignedRockets(Mission mission);
+
 }

@@ -196,4 +196,27 @@ class RocketServiceTest {
         assertEquals(1, mission.getAssignedRockets().size());
         assertEquals(MissionStatus.PENDING, mission.getStatus());
     }
+
+    @Test
+    void clearRocketCurrentMission(){
+        //given
+        Mission mission = new Mission("Luna");
+        Rocket rocket = new Rocket("Dragon 1");
+        rocket.setCurrentMission(mission);
+
+        //when
+        rocketService.clearRocketCurrentMission(rocket);
+
+        //then
+        assertNull(rocket.getCurrentMission());
+    }
+
+    @Test
+    void clearRocketCurrentMissionRocketNull(){
+        //given + when
+        Rocket rocket = null;
+
+        //then
+        assertDoesNotThrow(() -> rocketService.clearRocketCurrentMission(rocket));
+    }
 }

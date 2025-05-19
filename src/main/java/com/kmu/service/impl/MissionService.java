@@ -54,6 +54,12 @@ public class MissionService implements MissionServiceInterface {
                 .collect(Collectors.joining("\n"));
     }
 
+    @Override
+    public void clearAssignedRockets(Mission mission) {
+        if(mission == null) return;
+        mission.getAssignedRockets().clear();
+    }
+
     private Comparator<Mission> byRocketCount(){
         return Comparator.comparingInt(mission -> mission.getAssignedRockets().size());
     }

@@ -8,4 +8,7 @@ public interface RocketServiceInterface {
     boolean addNewRocket(Rocket rocket);
 
     boolean assignRocketToMission(Rocket rocket, Mission mission);
+
+    void clearRocketCurrentMission(Rocket rocket);
+
 }
