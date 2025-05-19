@@ -5,24 +5,31 @@ import com.kmu.dataobject.Rocket;
 import com.kmu.dataobject.RocketStatus;
 import com.kmu.service.RocketServiceInterface;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RocketService implements RocketServiceInterface {
 
     private static RocketService instance;
 
-    private final Map<String, Rocket> rocketMap;
+    private final Set<Rocket> rocketSet;
 
-    private final RocketStatusService rocketStatusService = RocketStatusService.getInstance();
-    private final MissionStatusService missionStatusService = MissionStatusService.getInstance();
+    private final RocketStatusService rocketStatusService;
+    private final MissionStatusService missionStatusService;
 
-    private RocketService(Map<String, Rocket> rocketMap) {
-        this.rocketMap = rocketMap;
+    private RocketService() {
+        this.rocketSet = new HashSet<>();
+        this.rocketStatusService = RocketStatusService.getInstance();
+        this.missionStatusService = MissionStatusService.getInstance();
     }
 
+    RocketService(RocketStatusService rocketStatusService, MissionStatusService missionStatusService, Set<Rocket> missionSet){
+        this.rocketStatusService = rocketStatusService;
+        this.rocketSet = missionSet;
+        this.missionStatusService = missionStatusService;
+    }
     public static RocketService getInstance(){
-        if(instance == null) instance = new RocketService(new HashMap<>());
+        if(instance == null) instance = new RocketService();
         return instance;
     }
 
@@ -30,8 +37,8 @@ public class RocketService implements RocketServiceInterface {
     public boolean addNewRocket(Rocket rocket) {
         if(rocket == null) return false;
         if(validateRocketName(rocket.getName())) return false;
-        if(rocketMap.containsKey(rocket.getName())) return false;
-        rocketMap.put(rocket.getName(), rocket);
+        if(rocketSet.contains(rocket)) return false;
+        rocketSet.add(rocket);
         return true;
     }
 

@@ -21,6 +21,9 @@ MissionStatusService
 Injected using static method (lazy singleton)
 Interface for every service.
 
+Used AI to find solution for Singleton testing
+First approach was to create maps(rocketName, rocket) but changed to set(rocket) as no access via name is mentioned
+
 
 For tests:
 isSingleton - for every service

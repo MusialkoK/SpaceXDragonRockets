@@ -4,41 +4,47 @@ import com.kmu.dataobject.Mission;
 import com.kmu.dataobject.MissionStatus;
 import com.kmu.dataobject.Rocket;
 import com.kmu.dataobject.RocketStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RocketServiceTest {
-    @InjectMocks
-    private RocketService rocketService;
 
-    @Mock
-    private HashMap<String, Rocket> rocketMap = new HashMap<>();
+    private RocketService rocketService;
+    @Spy
+    private Set<Rocket> rocketSet = new HashSet<>();
+    @Spy
+    private RocketStatusService rocketStatusService = RocketStatusService.getInstance();
+    @Spy
+    private MissionStatusService missionStatusService = MissionStatusService.getInstance();
+
+    @BeforeEach
+    void setUp() {
+        rocketService = new RocketService(rocketStatusService, missionStatusService, rocketSet);
+    }
 
     @Test
     void addRocketWithNotNullUniqueNameToMap() {
         //given
         String rocketName = "Dragon 1";
         Rocket rocket = new Rocket(rocketName);
-        when(rocketMap.put(rocketName, rocket)).thenCallRealMethod();
-        when(rocketMap.containsKey(rocketName)).thenCallRealMethod();
-        when(rocketMap.size()).thenCallRealMethod();
 
         //when
         boolean isAdded = rocketService.addNewRocket(rocket);
         //then
         assertTrue(isAdded);
-        verify(rocketMap, times(1)).put(rocketName, rocket);
-        assertTrue(rocketMap.containsKey(rocketName));
-        assertEquals(1, rocketMap.size());
+        verify(rocketSet, times(1)).add(rocket);
+        assertTrue(rocketSet.contains(rocket));
+        assertEquals(1, rocketSet.size());
     }
 
     @Test
@@ -46,14 +52,13 @@ class RocketServiceTest {
         //given
         String rocketName = null;
         Rocket rocket = new Rocket(rocketName);
-        when(rocketMap.size()).thenCallRealMethod();
 
         //when
         boolean isAdded = rocketService.addNewRocket(rocket);
         //then
         assertFalse(isAdded);
-        verify(rocketMap, never()).put(any(), any());
-        assertEquals(0, rocketMap.size());
+        verify(rocketSet, never()).add(any());
+        assertTrue(rocketSet.isEmpty());
     }
 
     @Test
@@ -61,14 +66,13 @@ class RocketServiceTest {
         //given
         String rocketName = "";
         Rocket rocket = new Rocket(rocketName);
-        when(rocketMap.size()).thenCallRealMethod();
 
         //when
         boolean isAdded = rocketService.addNewRocket(rocket);
         //then
         assertFalse(isAdded);
-        verify(rocketMap, never()).put(any(), any());
-        assertEquals(0, rocketMap.size());
+        verify(rocketSet, never()).add(any());
+        assertTrue(rocketSet.isEmpty());
     }
 
     @Test
@@ -76,9 +80,6 @@ class RocketServiceTest {
         //given
         String rocketName = "Dragon 1";
         Rocket firstRocket = new Rocket(rocketName);
-        when(rocketMap.put(any(), any())).thenCallRealMethod();
-        when(rocketMap.containsKey(rocketName)).thenCallRealMethod();
-        when(rocketMap.size()).thenCallRealMethod();
         rocketService.addNewRocket(firstRocket);
         Rocket secondRocket = new Rocket(rocketName);
 
@@ -86,9 +87,9 @@ class RocketServiceTest {
         boolean isAdded = rocketService.addNewRocket(secondRocket);
         //then
         assertFalse(isAdded);
-        verify(rocketMap, times(1)).put(any(), any());
-        assertTrue(rocketMap.containsKey(rocketName));
-        assertEquals(1, rocketMap.size());
+        verify(rocketSet, times(1)).add(any());
+        assertTrue(rocketSet.contains(firstRocket));
+        assertEquals(1, rocketSet.size());
     }
 
     @Test
@@ -100,11 +101,11 @@ class RocketServiceTest {
         boolean isAdded = rocketService.addNewRocket(rocket);
         //then
         assertFalse(isAdded);
-        verify(rocketMap, never()).put(any(), any());
+        verify(rocketSet, never()).add(any());
     }
 
     @Test
-    void isSingleton(){
+    void isSingleton() {
         //given + when
         RocketService rocketService1 = RocketService.getInstance();
         RocketService rocketService2 = RocketService.getInstance();
@@ -120,7 +121,6 @@ class RocketServiceTest {
         //given
         Mission mission = new Mission("Luna");
         Rocket rocket = new Rocket("Dragon 1");
-
         //when
         boolean isAssigned = rocketService.assignRocketToMission(rocket, mission);
 
@@ -129,7 +129,7 @@ class RocketServiceTest {
         assertEquals(RocketStatus.IN_SPACE, rocket.getStatus());
         assertEquals(mission, rocket.getCurrentMission());
         assertTrue(mission.getAssignedRockets().contains(rocket));
-        assertEquals(1,mission.getAssignedRockets().size());
+        assertEquals(1, mission.getAssignedRockets().size());
         assertEquals(MissionStatus.IN_PROGRESS, mission.getStatus());
     }
 
@@ -193,7 +193,7 @@ class RocketServiceTest {
         assertEquals(RocketStatus.IN_REPAIR, rocket.getStatus());
         assertEquals(mission, rocket.getCurrentMission());
         assertTrue(mission.getAssignedRockets().contains(rocket));
-        assertEquals(1,mission.getAssignedRockets().size());
+        assertEquals(1, mission.getAssignedRockets().size());
         assertEquals(MissionStatus.PENDING, mission.getStatus());
     }
 }
