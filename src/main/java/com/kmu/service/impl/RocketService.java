@@ -2,7 +2,6 @@ package com.kmu.service.impl;
 
 import com.kmu.model.Mission;
 import com.kmu.model.Rocket;
-import com.kmu.model.RocketStatus;
 import com.kmu.service.RocketServiceInterface;
 
 import java.util.HashSet;
@@ -14,19 +13,12 @@ public class RocketService implements RocketServiceInterface {
 
     private final Set<Rocket> rocketSet;
 
-    private final RocketStatusService rocketStatusService;
-    private final MissionStatusService missionStatusService;
-
     private RocketService() {
         this.rocketSet = new HashSet<>();
-        this.rocketStatusService = RocketStatusService.getInstance();
-        this.missionStatusService = MissionStatusService.getInstance();
     }
 
-    RocketService(RocketStatusService rocketStatusService, MissionStatusService missionStatusService, Set<Rocket> missionSet){
-        this.rocketStatusService = rocketStatusService;
+    RocketService(Set<Rocket> missionSet){
         this.rocketSet = missionSet;
-        this.missionStatusService = missionStatusService;
     }
     public static RocketService getInstance(){
         if(instance == null) instance = new RocketService();
@@ -45,11 +37,7 @@ public class RocketService implements RocketServiceInterface {
     @Override
     public boolean assignRocketToMission(Rocket rocket, Mission mission) {
         if(rocket == null || mission == null) return false;
-        if(rocket.getStatus().equals(RocketStatus.IN_SPACE)) return false;
         rocket.setCurrentMission(mission);
-        changeRocketStatus(rocket);
-        mission.addRocket(rocket);
-        missionStatusService.updateMissionStatus(mission);
         return true;
     }
 
@@ -61,10 +49,5 @@ public class RocketService implements RocketServiceInterface {
 
     private boolean validateRocketName(String rocketName){
         return rocketName == null || rocketName.isEmpty();
-    }
-
-    private void changeRocketStatus(Rocket rocket){
-        if(rocket.getStatus().equals(RocketStatus.IN_REPAIR)) return;
-        rocketStatusService.changeStatusToInSpace(rocket);
     }
 }

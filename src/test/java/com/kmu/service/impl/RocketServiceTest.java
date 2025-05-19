@@ -1,7 +1,6 @@
 package com.kmu.service.impl;
 
 import com.kmu.model.Mission;
-import com.kmu.model.MissionStatus;
 import com.kmu.model.Rocket;
 import com.kmu.model.RocketStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,14 +21,10 @@ class RocketServiceTest {
     private RocketService rocketService;
     @Spy
     private Set<Rocket> rocketSet = new HashSet<>();
-    @Spy
-    private RocketStatusService rocketStatusService = RocketStatusService.getInstance();
-    @Spy
-    private MissionStatusService missionStatusService = MissionStatusService.getInstance();
 
     @BeforeEach
     void setUp() {
-        rocketService = new RocketService(rocketStatusService, missionStatusService, rocketSet);
+        rocketService = new RocketService(rocketSet);
     }
 
     @Test
@@ -117,68 +112,6 @@ class RocketServiceTest {
     }
 
     @Test
-    void assignRocketToMissionSuccessful() {
-        //given
-        Mission mission = new Mission("Luna");
-        Rocket rocket = new Rocket("Dragon 1");
-        //when
-        boolean isAssigned = rocketService.assignRocketToMission(rocket, mission);
-
-        //then
-        assertTrue(isAssigned);
-        assertEquals(RocketStatus.IN_SPACE, rocket.getStatus());
-        assertEquals(mission, rocket.getCurrentMission());
-        assertTrue(mission.getAssignedRockets().contains(rocket));
-        assertEquals(1, mission.getAssignedRockets().size());
-        assertEquals(MissionStatus.IN_PROGRESS, mission.getStatus());
-    }
-
-    @Test
-    void returnFalseIfMissionNull() {
-        //given
-        Mission mission = null;
-        Rocket rocket = new Rocket("Dragon 1");
-
-        //when
-        boolean isAssigned = rocketService.assignRocketToMission(rocket, mission);
-        //then
-        assertFalse(isAssigned);
-        assertEquals(RocketStatus.ON_GROUND, rocket.getStatus());
-    }
-
-    @Test
-    void returnFalseIfRocketNull() {
-        //given
-        Mission mission = new Mission("Luna");
-        Rocket rocket = null;
-
-        //when
-        boolean isAssigned = rocketService.assignRocketToMission(rocket, mission);
-        //then
-        assertFalse(isAssigned);
-        assertTrue(mission.getAssignedRockets().isEmpty());
-        assertEquals(MissionStatus.SCHEDULED, mission.getStatus());
-    }
-
-    @Test
-    void notAssignRocketIfAlreadyInSpace() {
-        //given
-        Mission mission = new Mission("Luna");
-        Rocket rocket = new Rocket("Dragon 1");
-        rocket.setStatus(RocketStatus.IN_SPACE);
-
-        //when
-        boolean isAssigned = rocketService.assignRocketToMission(rocket, mission);
-
-        //then
-        assertFalse(isAssigned);
-        assertEquals(RocketStatus.IN_SPACE, rocket.getStatus());
-        assertNull(rocket.getCurrentMission());
-        assertTrue(mission.getAssignedRockets().isEmpty());
-        assertEquals(MissionStatus.SCHEDULED, mission.getStatus());
-    }
-
-    @Test
     void dontChangeRocketStatusToInSpaceIfInRepair() {
         //given
         Mission mission = new Mission("Luna");
@@ -192,9 +125,6 @@ class RocketServiceTest {
         assertTrue(isAssigned);
         assertEquals(RocketStatus.IN_REPAIR, rocket.getStatus());
         assertEquals(mission, rocket.getCurrentMission());
-        assertTrue(mission.getAssignedRockets().contains(rocket));
-        assertEquals(1, mission.getAssignedRockets().size());
-        assertEquals(MissionStatus.PENDING, mission.getStatus());
     }
 
     @Test

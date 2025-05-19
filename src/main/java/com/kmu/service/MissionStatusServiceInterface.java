@@ -9,6 +9,5 @@ public interface MissionStatusServiceInterface {
     boolean changeStatusToScheduled(Mission mission);
     boolean changeStatusToInProgress(Mission mission);
     boolean changeStatusToEnded(Mission mission);
-
     MissionStatus updateMissionStatus(Mission mission);
 }
