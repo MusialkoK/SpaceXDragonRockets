@@ -2,7 +2,6 @@ package com.kmu.service.impl;
 
 import com.kmu.model.Mission;
 import com.kmu.model.Rocket;
-import com.kmu.model.RocketStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,90 +20,14 @@ class MissionServiceTest {
     private MissionService missionService;
 
     @Spy
-    private Set<Mission> missionSet = new HashSet<>();
-
-    @Spy
-    private RocketService rocketService = RocketService.getInstance();
+    private final Set<Mission> missionSet = new HashSet<>();
 
     @BeforeEach
     void setUp() {
-        missionService = new MissionService(rocketService, missionSet);
+        missionService = new MissionService(missionSet);
     }
 
-
-    @Test
-    void assignOnGroundRocketsToMissionSuccessful(){
-        //given
-        Rocket rocket = new Rocket("Dragon 1");
-        Rocket rocket2 = new Rocket("Dragon 2");
-        Mission mission = new Mission("Luna");
-
-        Set<Rocket> rocketSet = Set.of(rocket, rocket2);
-
-        when(rocketService.assignRocketToMission(any(), any())).thenReturn(true).thenReturn(true);
-        //when
-        boolean success = missionService.assignRocketsToMission(mission, rocketSet);
-
-        //then
-        assertTrue(success);
-    }
-
-    @Test
-    void assignRocketsToNullMissionReturnsFalse(){
-        //given
-        Rocket rocket = new Rocket("Dragon 1");
-        Rocket rocket2 = new Rocket("Dragon 2");
-
-        Mission mission = null;
-
-        Set<Rocket> rocketSet = Set.of(rocket, rocket2);
-
-        //when
-        boolean success = missionService.assignRocketsToMission(mission, rocketSet);
-
-        //then
-        assertFalse(success);
-        assertEquals(RocketStatus.ON_GROUND, rocket.getStatus());
-        assertEquals(RocketStatus.ON_GROUND, rocket2.getStatus());
-    }
-
-    @Test
-    void assignInRepairRocketToMissionSuccessful(){
-        //given
-        Rocket rocket = new Rocket("Dragon 1");
-        Rocket rocket2 = new Rocket("Dragon 2");
-        rocket.setStatus(RocketStatus.IN_REPAIR);
-
-        Mission mission = new Mission("Luna");
-
-        Set<Rocket> rocketSet = Set.of(rocket, rocket2);
-        when(rocketService.assignRocketToMission(any(), any())).thenReturn(true).thenReturn(true);
-
-        //when
-        boolean success = missionService.assignRocketsToMission(mission, rocketSet);
-
-        //then
-        assertTrue(success);
-    }
-
-    @Test
-    void assignInSpaceRocketToMissionReturnsFalse(){
-        //given
-        Rocket rocket = new Rocket("Dragon 1");
-        Rocket rocket2 = new Rocket("Dragon 2");
-        rocket.setStatus(RocketStatus.IN_SPACE);
-
-        Mission mission = new Mission("Luna");
-
-        Set<Rocket> rocketSet = Set.of(rocket, rocket2);
-        when(rocketService.assignRocketToMission(any(), any())).thenReturn(false).thenReturn(true);
-
-        //when
-        boolean success = missionService.assignRocketsToMission(mission, rocketSet);
-
-        //then
-        assertFalse(success);
-    }
+    private final SpaceXService spaceXService = new SpaceXService();
 
     @Test
     void addMissionWithNotNullUniqueNameToSet() {
@@ -125,8 +47,7 @@ class MissionServiceTest {
     @Test
     void doNotAddMissionWithNullName() {
         //given
-        String missionName = null;
-        Mission mission = new Mission(missionName);
+        Mission mission = new Mission(null);
 
 
         //when
@@ -171,10 +92,9 @@ class MissionServiceTest {
     @Test
     void doNotAddIfRocketNull() {
         //given
-        Mission mission = null;
 
         //when
-        boolean isAdded = missionService.addNewMission(mission);
+        boolean isAdded = missionService.addNewMission(null);
 
         //then
         assertFalse(isAdded);
@@ -192,6 +112,54 @@ class MissionServiceTest {
         assertNotNull(missionService1);
         assertEquals(missionService1, missionService2);
     }
+
+
+    @Test
+    void addRocketToMissionSuccessful(){
+        //given
+        Rocket rocket = new Rocket("Dragon 1");
+        Mission mission = new Mission("Luna");
+
+        //when
+        boolean added = missionService.addRocketToMission(rocket, mission);
+
+        //then
+
+        assertTrue(added);
+        assertTrue(mission.getAssignedRockets().contains(rocket));
+        assertEquals(1, mission.getAssignedRockets().size());
+    }
+
+    @Test
+    void addRocketToMissionNullReturnFalse(){
+        //given
+        Rocket rocket = new Rocket("Dragon 1");
+
+        //when
+        boolean added = missionService.addRocketToMission(rocket, null);
+
+        //then
+
+        assertFalse(added);
+        assertDoesNotThrow(() -> missionService.addRocketToMission(rocket, null));
+    }
+
+    @Test
+    void addRocketNullToMissionReturnFalse(){
+        //given
+        Mission mission = new Mission("Luna");
+
+        //when
+        boolean added = missionService.addRocketToMission(null, mission);
+
+        //then
+
+        assertFalse(added);
+        assertTrue(mission.getAssignedRockets().isEmpty());
+        assertDoesNotThrow(() -> missionService.addRocketToMission(null, mission));
+    }
+
+
 
     @Test
     void summaryForSingleMissionNoRockets(){
@@ -213,9 +181,7 @@ class MissionServiceTest {
         missionService.addNewMission(mission);
         Rocket rocket1 = new Rocket("Dragon 1");
         Rocket rocket2 = new Rocket("Dragon 2");
-        rocketService.addNewRocket(rocket1);
-        rocketService.addNewRocket(rocket2);
-        missionService.assignRocketsToMission(mission, Set.of(rocket1, rocket2));
+        spaceXService.assignRocketsToMission(mission, Set.of(rocket1, rocket2));
 
         String expected = """
                 - Luna - In progress - Dragons: 2
@@ -237,9 +203,7 @@ class MissionServiceTest {
         missionService.addNewMission(mission1);
         Rocket rocket1 = new Rocket("Dragon 1");
         Rocket rocket2 = new Rocket("Dragon 2");
-        rocketService.addNewRocket(rocket1);
-        rocketService.addNewRocket(rocket2);
-        missionService.assignRocketsToMission(mission1, Set.of(rocket1, rocket2));
+        spaceXService.assignRocketsToMission(mission1, Set.of(rocket1, rocket2));
 
         Mission mission2 = new Mission("Venus");
         missionService.addNewMission(mission2);
@@ -247,8 +211,7 @@ class MissionServiceTest {
         Mission mission3 = new Mission("Ceres");
         missionService.addNewMission(mission3);
         Rocket rocket3 = new Rocket("Dragon 3");
-        rocketService.addNewRocket(rocket3);
-        missionService.assignRocketsToMission(mission3, Set.of(rocket3));
+        spaceXService.assignRocketsToMission(mission3, Set.of(rocket3));
 
         String expected = """
                 - Luna - In progress - Dragons: 2
@@ -273,25 +236,19 @@ class MissionServiceTest {
         missionService.addNewMission(mission1);
         Rocket rocket1 = new Rocket("Dragon 1");
         Rocket rocket2 = new Rocket("Dragon 2");
-        rocketService.addNewRocket(rocket1);
-        rocketService.addNewRocket(rocket2);
-        missionService.assignRocketsToMission(mission1, Set.of(rocket1, rocket2));
+        spaceXService.assignRocketsToMission(mission1, Set.of(rocket1, rocket2));
 
         Mission mission2 = new Mission("Ceres");
         missionService.addNewMission(mission2);
         Rocket rocket3 = new Rocket("Dragon 3");
         Rocket rocket4 = new Rocket("Dragon 4");
-        rocketService.addNewRocket(rocket3);
-        rocketService.addNewRocket(rocket4);
-        missionService.assignRocketsToMission(mission2, Set.of(rocket3, rocket4));
+        spaceXService.assignRocketsToMission(mission2, Set.of(rocket3, rocket4));
 
         Mission mission3 = new Mission("Venus");
         missionService.addNewMission(mission3);
         Rocket rocket5 = new Rocket("Dragon 5");
         Rocket rocket6 = new Rocket("Dragon 6");
-        rocketService.addNewRocket(rocket5);
-        rocketService.addNewRocket(rocket6);
-        missionService.assignRocketsToMission(mission3, Set.of(rocket5, rocket6));
+        spaceXService.assignRocketsToMission(mission3, Set.of(rocket5, rocket6));
 
         String expected = """
                 - Venus - In progress - Dragons: 2
@@ -309,5 +266,24 @@ class MissionServiceTest {
 
         //then
         assertEquals(expected, summary);
+    }
+
+    @Test
+    void clearAssignedRockets(){
+        //given
+        Mission mission = new Mission("Luna");
+        Rocket rocket = new Rocket("Dragon 1");
+        mission.getAssignedRockets().add(rocket);
+        ///when
+        missionService.clearAssignedRockets(mission);
+        //then
+        assertTrue(mission.getAssignedRockets().isEmpty());
+    }
+
+    @Test
+    void clearAssignedRocketsWhenMissionNull(){
+        //given + when
+        //then
+        assertDoesNotThrow(() -> missionService.clearAssignedRockets(null));
     }
 }

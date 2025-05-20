@@ -4,12 +4,10 @@ import com.kmu.model.Mission;
 import com.kmu.model.MissionStatus;
 import com.kmu.model.Rocket;
 import com.kmu.model.RocketStatus;
-import com.kmu.service.MissionStatusServiceInterface;
 
-import java.util.HashSet;
 import java.util.Set;
 
-public class MissionStatusService implements MissionStatusServiceInterface {
+public class MissionStatusService{
 
     private static MissionStatusService instance;
 
@@ -21,36 +19,25 @@ public class MissionStatusService implements MissionStatusServiceInterface {
     private MissionStatusService() {
     }
 
-    @Override
-    public MissionStatus changeStatusToPending(Mission mission) {
+    boolean changeStatusToPending(Mission mission) {
         return changeMissionStatusTo(mission, MissionStatus.PENDING);
     }
 
-    @Override
-    public MissionStatus changeStatusToScheduled(Mission mission) {
+    boolean changeStatusToScheduled(Mission mission) {
         return changeMissionStatusTo(mission, MissionStatus.SCHEDULED);
     }
 
-    @Override
-    public MissionStatus changeStatusToInProgress(Mission mission) {
+
+    boolean changeStatusToInProgress(Mission mission) {
         return changeMissionStatusTo(mission, MissionStatus.IN_PROGRESS);
 
     }
 
-    @Override
-    public MissionStatus changeStatusToEnded(Mission mission) {
-        if(mission == null) return null;
-        RocketStatusService rocketStatusService = RocketStatusService.getInstance();
-        mission.getAssignedRockets().forEach(rocket -> {
-            rocketStatusService.changeStatusToOnGround(rocket);
-            rocket.setCurrentMission(null);
-        });
-        mission.setAssignedRockets(new HashSet<>());
+    boolean changeStatusToEnded(Mission mission) {
         return changeMissionStatusTo(mission, MissionStatus.ENDED);
     }
 
-    @Override
-    public MissionStatus updateMissionStatus(Mission mission) {
+    MissionStatus updateMissionStatus(Mission mission) {
         if(mission == null) return null;
         Set<Rocket> assignedRockets = mission.getAssignedRockets();
         if(assignedRockets.isEmpty()){
@@ -65,10 +52,10 @@ public class MissionStatusService implements MissionStatusServiceInterface {
         return MissionStatus.IN_PROGRESS;
     }
 
-    private MissionStatus changeMissionStatusTo(Mission mission, MissionStatus status){
-        if(mission == null) return null;
+    private boolean changeMissionStatusTo(Mission mission, MissionStatus status){
+        if(mission == null) return false;
         mission.setStatus(status);
-        return status;
+        return true;
     }
 
     private boolean hasAtLeastOneRocketInRepair(Set<Rocket> assignedRockets){

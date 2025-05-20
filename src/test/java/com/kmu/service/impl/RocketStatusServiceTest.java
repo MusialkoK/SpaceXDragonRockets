@@ -1,7 +1,6 @@
 package com.kmu.service.impl;
 
 import com.kmu.model.Mission;
-import com.kmu.model.MissionStatus;
 import com.kmu.model.Rocket;
 import com.kmu.model.RocketStatus;
 import org.junit.jupiter.api.Test;
@@ -33,10 +32,8 @@ class RocketStatusServiceTest {
     @Test
     void ifRocketIsNullWhenChangeToInSpaceReturnFalse() {
         //given
-        Rocket rocket = null;
-
         //when
-        boolean inSpace = rocketStatusService.changeStatusToInSpace(rocket);
+        boolean inSpace = rocketStatusService.changeStatusToInSpace(null);
 
         //then
         assertFalse(inSpace);
@@ -67,7 +64,6 @@ class RocketStatusServiceTest {
         //then
         assertTrue(inRepair);
         assertEquals(RocketStatus.IN_REPAIR, rocket.getStatus());
-        assertEquals(MissionStatus.PENDING, rocket.getCurrentMission().getStatus());
     }
 
     @Test
@@ -86,10 +82,9 @@ class RocketStatusServiceTest {
     @Test
     void ifRocketIsNullWhenChangeToInRepairReturnFalse() {
         //given
-        Rocket rocket = null;
 
         //when
-        boolean inRepair = rocketStatusService.changeStatusToInRepair(rocket);
+        boolean inRepair = rocketStatusService.changeStatusToInRepair(null);
 
         //then
         assertFalse(inRepair);
@@ -111,10 +106,9 @@ class RocketStatusServiceTest {
     @Test
     void ifRocketIsNullWhenChangeToOnGroundReturnFalse() {
         //given
-        Rocket rocket = null;
 
         //when
-        boolean inSpace = rocketStatusService.changeStatusToOnGround(rocket);
+        boolean inSpace = rocketStatusService.changeStatusToOnGround(null);
 
         //then
         assertFalse(inSpace);

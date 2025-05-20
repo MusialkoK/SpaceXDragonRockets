@@ -1,6 +1,6 @@
 package com.kmu.model;
 
-import com.kmu.service.impl.MissionService;
+import com.kmu.service.impl.SpaceXService;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -58,8 +58,8 @@ class MissionTest {
         Mission mission = new Mission(missionName);
         Rocket rocket1 = new Rocket("Dragon 1");
         Rocket rocket2 = new Rocket("Dragon 2");
-        MissionService missionService = MissionService.getInstance();
-        missionService.assignRocketsToMission(mission, Set.of(rocket1, rocket2));
+        SpaceXService spaceXService = new SpaceXService();
+        spaceXService.assignRocketsToMission(mission, Set.of(rocket1, rocket2));
         String statusName = mission.getStatus().getStatusName();
         int rocketsAssignCount = mission.getAssignedRockets().size();
 
@@ -67,6 +67,8 @@ class MissionTest {
 
         //when
         String summary = mission.getSummary();
+        System.out.println(summary + "|");
+        System.out.println(summaryHeader + "|");
         //then
 
         assertTrue(summary.startsWith(summaryHeader + "\n"));

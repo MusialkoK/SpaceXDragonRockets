@@ -2,25 +2,20 @@ package com.kmu.service.impl;
 
 import com.kmu.model.Mission;
 import com.kmu.model.Rocket;
-import com.kmu.service.MissionServiceInterface;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class MissionService implements MissionServiceInterface {
+public class MissionService {
     private static MissionService instance;
     private final Set<Mission> missionSet;
-    private final RocketService rocketService;
     private MissionService() {
         this.missionSet = new HashSet<>();
-        this.rocketService = RocketService.getInstance();
     }
 
-    MissionService(RocketService rocketService, Set<Mission> missionSet){
-        this.rocketService = rocketService;
+    MissionService(Set<Mission> missionSet){
         this.missionSet = missionSet;
     }
 
@@ -29,8 +24,7 @@ public class MissionService implements MissionServiceInterface {
         return instance;
     }
 
-    @Override
-    public boolean addNewMission(Mission mission) {
+    boolean addNewMission(Mission mission) {
         if(mission == null) return false;
         if(validateMissionName(mission.getName())) return false;
         if(missionSet.contains(mission)) return false;
@@ -38,20 +32,22 @@ public class MissionService implements MissionServiceInterface {
         return true;
     }
 
-    @Override
-    public boolean assignRocketsToMission(Mission mission, Collection<Rocket> rocketSet) {
-        if(mission == null) return false;
-        return rocketSet.stream()
-                .map(rocket -> rocketService.assignRocketToMission(rocket,mission))
-                .allMatch(aBoolean -> aBoolean.equals(true));
-    }
-
-    @Override
-    public String getMissionsSummary() {
+    String getMissionsSummary() {
         return missionSet.stream()
                 .sorted(byRocketCount().reversed().thenComparing(alphabetically().reversed()))
                 .map(Mission::getSummary)
                 .collect(Collectors.joining("\n"));
+    }
+
+    void clearAssignedRockets(Mission mission) {
+        if(mission == null) return;
+        mission.getAssignedRockets().clear();
+    }
+
+    boolean addRocketToMission(Rocket rocket, Mission mission) {
+        if(rocket == null || mission == null) return false;
+        mission.addRocket(rocket);
+        return true;
     }
 
     private Comparator<Mission> byRocketCount(){
